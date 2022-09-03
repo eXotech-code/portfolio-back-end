@@ -1,0 +1,37 @@
+services:
+ database:
+  image: mysql:oracle
+  container_name: database
+  volumes:
+   - ./data/base:/var/lib/mysql
+  environment:
+   - MYSQL_ROOT_PASSWORD=${DB_PASS}
+   - MYSQL_DATABASE=api
+  restart: on-failure
+
+ api:
+  image: api
+  container_name: api
+  depends_on:
+   - database
+  build:
+   context: .
+  expose:
+    - 80
+  environment:
+   - DB_PASS
+  restart: on-failure
+
+ web:
+  image: nginx
+  container_name: web
+  depends_on:
+   - api
+  ports:
+   - 80:80
+   - 443:443
+  volumes:
+   - ./data/web:/usr/share/nginx/html
+   - ./data/conf:/etc/nginx/conf.d
+   - /etc/ssl:/etc/ssl
+  restart: on-failure
