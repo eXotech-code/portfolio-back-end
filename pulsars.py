@@ -150,16 +150,3 @@ class PulsarTree(KDTree):
         mergeSort(pulsars, axis)
         median = len(pulsars) // 2
         return Pulsar(self.build(pulsars[:median], depth+1), self.build(pulsars[median+1:], depth+1), **pulsars[median])
-
-t = PulsarTree("pulsars.csv")
-# Calculate range of visible coordinates in ecliptical
-# coordinate system.
-while True:
-    r = rangeOfSight((23.6, 15.8), 5)
-    # Perform a range search for chosen coord range
-    # on the 2-dimensional tree and return results.
-    plst = t.rangeSearch(t.root, r)
-    returnList = []
-    for p in plst:
-        returnList.append(p.returnVars())
-    print(returnList)
