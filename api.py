@@ -3,10 +3,11 @@
 from flask import Flask, request
 from flask_cors import CORS
 from mysql.connector import connect, Error, errorcode
+from datetime import datetime
+from json import dumps
+from pulsars import PulsarTree, rangeOfSight
 import os
 import sys
-from datetime import datetime
-from pulsars import PulsarTree, rangeOfSight
 
 
 ### UTILITIES ###
@@ -100,7 +101,7 @@ def pulsars():
 @app.route("/pulsars/range", methods=["GET"])
 def range():
     if r:
-        return r, 200
+        return dumps(r)
     else:
         return "ERROR: Range cannot be fetched before pulsar coordinates.", 404
 
