@@ -100,7 +100,7 @@ def pulsars():
 @app.route("/pulsars/range", methods=["GET"])
 def range():
     if r:
-        return r
+        return r, 200
     else:
         return "ERROR: Range cannot be fetched before pulsar coordinates.", 404
 
