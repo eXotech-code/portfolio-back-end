@@ -87,6 +87,7 @@ def receiveMessage():
 def pulsars():
     # Calculate range of visible coordinates in ecliptical
     # coordinate system.
+    global r
     r = rangeOfSight((23.6, 15.8), 5) # Sensor size 23.6 mm x 15.8 mm
     # Perform a range search for chosen coord range
     # on the 2-dimensional tree and return results.
