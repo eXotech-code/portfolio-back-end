@@ -101,7 +101,7 @@ def range():
     if r:
         return r
     else:
-        return 404
+        return "ERROR: Range cannot be fetched before pulsar coordinates.", 404
 
 if __name__ == "__main__":
     createMessageTable()
