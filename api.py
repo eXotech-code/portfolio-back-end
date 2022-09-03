@@ -87,7 +87,7 @@ def receiveMessage():
 def pulsars():
     # Calculate range of visible coordinates in ecliptical
     # coordinate system.
-    r = rangeOfSight((23.6, 15.8), 5)
+    r = rangeOfSight((23.6, 15.8), 5) # Sensor size 23.6 mm x 15.8 mm
     # Perform a range search for chosen coord range
     # on the 2-dimensional tree and return results.
     plst = pulsarT.rangeSearch(pulsarT.root, r)
@@ -96,8 +96,14 @@ def pulsars():
         returnList.append(p.returnVars())
     return returnList
 
+@app.route("/pulsars/range", methods=["GET"])
+def range():
+    return r
+
 if __name__ == "__main__":
     createMessageTable()
     pulsarT = PulsarTree("pulsars.csv")
+    # Initialize the range of sight.
+    r = None
     port = int(os.environ.get('PORT', 80))
     app.run(debug=True, host='0.0.0.0', port=port)
