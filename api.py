@@ -98,7 +98,10 @@ def pulsars():
 
 @app.route("/pulsars/range", methods=["GET"])
 def range():
-    return r
+    if r:
+        return r
+    else:
+        return 404
 
 if __name__ == "__main__":
     createMessageTable()
