@@ -90,7 +90,7 @@ def pulsars(north):
     # coordinate system.
     global r
     r = rangeOfSight((23.6, 15.8), 1, north) # Sensor size 23.6 mm x 15.8 mm
-    print("Got query for range of coordinates: xMin=%s, xMax=%s, yMin=%s, yMax=%s" % (r[0], r[1], r[2], r[3]))
+    print("Got query for range of coordinates: xMin=%s, xMax=%s, yMin=%s, yMax=%s" % (r[0], r[1], r[2], r[3]), flush=True)
     # Perform a range search for chosen coord range
     # on the 2-dimensional tree and return results.
     plst = pulsarT.rangeSearch(pulsarT.root, r)
