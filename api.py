@@ -89,7 +89,7 @@ def pulsars(north):
     # Calculate range of visible coordinates in ecliptical
     # coordinate system.
     global r
-    r = rangeOfSight((23.6, 15.8), 5, north) # Sensor size 23.6 mm x 15.8 mm
+    r = rangeOfSight((23.6, 15.8), 1, north) # Sensor size 23.6 mm x 15.8 mm
     # Perform a range search for chosen coord range
     # on the 2-dimensional tree and return results.
     plst = pulsarT.rangeSearch(pulsarT.root, r)
