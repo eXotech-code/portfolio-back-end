@@ -9,11 +9,6 @@ from math import sqrt
 from mergesort import mergeSort
 from kdtree import KDTree, Node
 
-# Prints the currently visible pulsars in the
-# sky above Wrocław.
-
-LATITUDE = 51
-
 class Range:
     def __init__(self, center, range, axis=0):
         half = range/2
@@ -60,30 +55,30 @@ def toDegrees(time):
     coord+=time.second/60*60
     return coord
 
-def computeDec(date):
+def computeDec(date, north):
     yearDay = date.timetuple().tm_yday # Day of the year out of 365
     # Compute the change in declination due to precession.
     pChange = -23.45 * cos(360/355 * (yearDay*10))
-    return LATITUDE + pChange
+    return north + pChange
 
 # Calculate the central coordinates meaning
 # the coordinates directly above my head.
-def center():
+def center(north):
     # Ascention based on current hour.
     t = datetime.now(timezone.utc)
     ra = toDegrees(t)
 
     # Declination with correction for precession.
-    dec = computeDec(t)
+    dec = computeDec(t, north)
     return ra, dec
 
 
 # Calculate the range of visible coordinates in the sky
 # for chosen camera sensor dimensions and focal length.
-def rangeOfSight(sensorDimensions, f):
+def rangeOfSight(sensorDimensions, f, north):
     horizontal = calcAngleOfView(sensorDimensions[0], f)
     vertical = calcAngleOfView(sensorDimensions[1], f)
-    c = center()
+    c = center(north)
     ra = Range(c, horizontal)
     dec = Range(c, vertical, 1)
     return *ra, *dec

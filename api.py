@@ -84,12 +84,12 @@ def receiveMessage():
     execQuery("INSERT INTO messages (ip, name, email, message, time) VALUES (%s)" % (payload))
     return "Sent."
 
-@app.route("/pulsars", methods=["GET"])
-def pulsars():
+@app.route("/pulsars/<int:north>", methods=["GET"])
+def pulsars(north):
     # Calculate range of visible coordinates in ecliptical
     # coordinate system.
     global r
-    r = rangeOfSight((23.6, 15.8), 5) # Sensor size 23.6 mm x 15.8 mm
+    r = rangeOfSight((23.6, 15.8), 5, north) # Sensor size 23.6 mm x 15.8 mm
     # Perform a range search for chosen coord range
     # on the 2-dimensional tree and return results.
     plst = pulsarT.rangeSearch(pulsarT.root, r)
