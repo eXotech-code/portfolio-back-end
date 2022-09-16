@@ -151,9 +151,8 @@ def range():
 def newp():
     data = loads(request.get_json())
     print(data, flush=True)
-    timeFormat = "%d, %m, %Y %H:%M"
-    t = data["date"].strftime(timeFormat)
-    payloadT = "STR_TO_DATETIME(%s, %s)" % (t, timeFormat.replace("M", "i"))
+    timeFormat = "%d.%m.%Y %H:%M"
+    payloadT = "STR_TO_DATETIME(%s, %s)" % (data["date"], timeFormat.replace("M", "i"))
     payload = "%d, %d, %s, %s, %s, %s" % (data["id"], data["image"], data["title"], data["description"], payloadT, data["content"])
     query = "INSERT INTO posts (id, image, title, description, date, content) VALUES (%s)" % (payload)
     execQuery(query)
