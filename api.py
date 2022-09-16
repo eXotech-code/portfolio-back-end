@@ -68,6 +68,44 @@ def createMessageTable():
     execQuery("CREATE TABLE IF NOT EXISTS messages (id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, ip INT(4) UNSIGNED NOT NULL, name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, message TEXT NOT NULL, time DATETIME)");
     done()
 
+def createPostTable():
+    print("Creating new 'posts' table.")
+    execQuery(
+        """
+        CREATE TABLE IF NOT EXISTS posts (
+            id INT(10) UNSIGNED NOT NULL PRIMARY KEY,
+            image TINYINT NOT NULL,
+            title VARCHAR(255) NOT NULL,
+            description VARCHAR(255) NOT NULL,
+            date DATETIME NOT NULL,
+            content TEXT NOT NULL
+        )
+        """
+    )
+    done()
+    print("Creating new 'posttags' table.")
+    execQuery(
+        """
+        CREATE TABLE IF NOT EXISTS posttags (
+            relid INT(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            postid INT(10) UNSIGNED NOT NULL,
+            tag VARCHAR(255) NOT NULL
+        )
+        """
+    )
+    done()
+    print("Creating new 'tags' table.")
+    execQuery(
+        """
+        CREATE TABLE IF NOT EXISTS tags (
+            name VARCHAR(255) NOT NULL PRIMARY KEY,
+            bgcolour VARCHAR(6) NOT NULL,
+            colour VARCHAR(6) NOT NULL
+        )
+        """
+    )
+    done()
+
 ### RUNTIME ###
 
 app = Flask(__name__)
@@ -108,6 +146,25 @@ def range():
         return dumps(r)
     else:
         return "ERROR: Range cannot be fetched before pulsar coordinates.", 404
+
+@app.route("/newp", methods=["POST"])
+def newp():
+    data = request.json
+    timeFormat = "%d, %m, %Y %H:%M"
+    t = data["date"].strftime(timeFormat)
+    payloadT = "STR_TO_DATETIME(%s, %s)" % (t, timeFormat.replace("M", "i"))
+    payload = "%d, %d, %s, %s, %s, %s" % (data["id"], data["image"], data["title"], data["description"], payloadT, data["content"])
+    query = "INSERT INTO posts (id, image, title, description, date, content) VALUES (%s)" % (payload)
+    execQuery(query)
+    for tag in data["tags"]:
+        payload = "%d, %s" % (data["id"], tag[0])
+        query = "INSERT INTO posttag (postid, tag) VALUES (%s)" % (payload)
+        execQuery(query)
+        payload = "%s, %s, %s" % (tag[0], tag[1], tag[2])
+        query = "INSERT IGNORE INTO tags (name, bgcolour, colour) VALUES (%s)" % (payload)
+        execQuery(query)
+    return "Done."
+
 
 if __name__ == "__main__":
     createMessageTable()
