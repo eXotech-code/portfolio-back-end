@@ -4,7 +4,7 @@ from flask import Flask, request
 from flask_cors import CORS
 from mysql.connector import connect, Error, errorcode
 from datetime import datetime
-from json import dumps, loads
+from json import dumps
 from pulsars import PulsarTree, rangeOfSight
 import os
 import sys
@@ -149,20 +149,21 @@ def range():
 
 @app.route("/newp", methods=["POST"])
 def newp():
-    data = loads(request.get_json())
-    print(data, flush=True)
-    timeFormat = "%d.%m.%Y %H:%M"
-    payloadT = "STR_TO_DATETIME(%s, %s)" % (data["date"], timeFormat.replace("M", "i"))
-    payload = "%d, %d, %s, %s, %s, %s" % (data["id"], data["image"], data["title"], data["description"], payloadT, data["content"])
-    query = "INSERT INTO posts (id, image, title, description, date, content) VALUES (%s)" % (payload)
-    execQuery(query)
-    for tag in data["tags"]:
-        payload = "%d, %s" % (data["id"], tag[0])
-        query = "INSERT INTO posttag (postid, tag) VALUES (%s)" % (payload)
+    data = request.json
+    for post in data:
+        print(post, flush=True)
+        timeFormat = "%d.%m.%Y %H:%M"
+        payloadT = "STR_TO_DATETIME(%s, %s)" % (post["date"], timeFormat.replace("M", "i"))
+        payload = "%d, %d, %s, %s, %s, %s" % (post["id"], post["image"], post["title"], post["description"], payloadT, post["content"])
+        query = "INSERT INTO posts (id, image, title, description, date, content) VALUES (%s)" % (payload)
         execQuery(query)
-        payload = "%s, %s, %s" % (tag[0], tag[1], tag[2])
-        query = "INSERT IGNORE INTO tags (name, bgcolour, colour) VALUES (%s)" % (payload)
-        execQuery(query)
+        for tag in post["tags"]:
+            payload = "%d, %s" % (post["id"], tag[0])
+            query = "INSERT INTO posttag (postid, tag) VALUES (%s)" % (payload)
+            execQuery(query)
+            payload = "%s, %s, %s" % (tag[0], tag[1], tag[2])
+            query = "INSERT IGNORE INTO tags (name, bgcolour, colour) VALUES (%s)" % (payload)
+            execQuery(query)
     return "Done."
 
 
