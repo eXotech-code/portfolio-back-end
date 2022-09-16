@@ -150,6 +150,7 @@ def range():
 @app.route("/newp", methods=["POST"])
 def newp():
     data = request.json
+    print(data, flush=True)
     timeFormat = "%d, %m, %Y %H:%M"
     t = data["date"].strftime(timeFormat)
     payloadT = "STR_TO_DATETIME(%s, %s)" % (t, timeFormat.replace("M", "i"))
