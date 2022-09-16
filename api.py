@@ -154,7 +154,7 @@ def newp():
         print(post, flush=True)
         timeFormat = "%d.%m.%Y %H:%M"
         payloadT = "STR_TO_DATE('%s', '%s')" % (post["date"], timeFormat.replace("M", "i"))
-        payload = "%d, %d, '%s', '%s', '%s', '%s'" % (post["id"], post["image"], post["title"], post["description"], payloadT, post["content"])
+        payload = "%d, %d, '%s', '%s', %s, '%s'" % (post["id"], post["image"], post["title"], post["description"], payloadT, post["content"])
         query = "INSERT INTO posts (id, image, title, description, date, content) VALUES (%s)" % (payload)
         execQuery(query)
         for tag in post["tags"]:
