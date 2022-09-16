@@ -159,7 +159,7 @@ def newp():
         execQuery(query)
         for tag in post["tags"]:
             payload = "%d, '%s'" % (post["id"], tag[0])
-            query = "INSERT INTO posttag (postid, tag) VALUES (%s)" % (payload)
+            query = "INSERT INTO posttags (postid, tag) VALUES (%s)" % (payload)
             execQuery(query)
             payload = "'%s', '%s', '%s'" % (tag[0], tag[1], tag[2])
             query = "INSERT IGNORE INTO tags (name, bgcolour, colour) VALUES (%s)" % (payload)
