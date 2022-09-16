@@ -168,6 +168,7 @@ def newp():
 
 if __name__ == "__main__":
     createMessageTable()
+    createPostTable()
     pulsarT = PulsarTree("pulsars.csv")
     # Initialize the range of sight.
     r = None
