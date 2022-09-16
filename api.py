@@ -180,7 +180,7 @@ def recent():
         p["tags"] = tags
     return posts
 
-@app.route("posts/<int:id>", methods=["GET"])
+@app.route("/posts/<int:id>", methods=["GET"])
 def chosenPost(id):
     p = execQuery("SELECT * FROM posts WHERE (id = %d)")
     tags = execQuery(
