@@ -4,7 +4,7 @@ from flask import Flask, request
 from flask_cors import CORS
 from mysql.connector import connect, Error, errorcode
 from datetime import datetime
-from json import dumps
+from json import dumps, loads
 from pulsars import PulsarTree, rangeOfSight
 import os
 import sys
@@ -149,7 +149,7 @@ def range():
 
 @app.route("/newp", methods=["POST"])
 def newp():
-    data = request.json
+    data = loads(request.json)
     print(data, flush=True)
     timeFormat = "%d, %m, %Y %H:%M"
     t = data["date"].strftime(timeFormat)
