@@ -151,7 +151,7 @@ def range():
 def newp():
     data = request.json
     for post in data:
-        print(post, flush=True)
+        print("Handling post: '%s'" % (post["title"]))
         timeFormat = "%d.%m.%Y %H:%M"
         payloadT = "STR_TO_DATE('%s', '%s')" % (post["date"], timeFormat.replace("M", "i"))
         payload = "%d, %d, '%s', '%s', %s, '%s'" % (post["id"], post["image"], post["title"], post["description"], payloadT, post["content"])
@@ -166,6 +166,31 @@ def newp():
             execQuery(query)
     return "Done."
 
+# This route is used for displaying previews of posts in blog showcase components.
+@app.route("/posts/recent", methods=["GET"])
+def recent():
+    posts = execQuery("SELECT id, image, title, description, date FROM posts")
+    for p in posts:
+        tags = execQuery(
+            """
+            SELECT name, colour, bgcolour FROM tags LEFT JOIN (posts, posttags)
+            ON (posts.id = %d AND posts.id = posttags.id AND tags.name = posttags.name)
+            """ % (p["id"])
+        )
+        p["tags"] = tags
+    return posts
+
+@app.route("posts/<int:id>", methods=["GET"])
+def chosenPost(id):
+    p = execQuery("SELECT * FROM posts WHERE (id = %d)")
+    tags = execQuery(
+       """
+       SELECT name, colour, bgcolour FROM tags LEFT JOIN (posts, posttags)
+       ON (posts.id = %d AND posts.id = posttags.id AND tags.name = posttags.name)
+       """ % (p["id"])
+    )
+    p["tags"] = tags
+    return p
 
 if __name__ == "__main__":
     createMessageTable()
