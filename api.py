@@ -182,7 +182,7 @@ def recent():
 
 @app.route("/posts/<int:id>", methods=["GET"])
 def chosenPost(id):
-    p = execQuery("SELECT * FROM posts WHERE (id = %d)")
+    p = execQuery("SELECT * FROM posts WHERE (id = %d)" % (id))
     tags = execQuery(
        """
        SELECT name, colour, bgcolour FROM tags LEFT JOIN (posts, posttags)
