@@ -174,7 +174,7 @@ def recent():
         tags = execQuery(
             """
             SELECT name, colour, bgcolour FROM tags LEFT JOIN (posts, posttags)
-            ON (posts.id = %d AND posts.id = posttags.id AND tags.name = posttags.name)
+            ON (posts.id = %d AND posts.id = posttags.postid AND tags.name = posttags.tag)
             """ % (p["id"])
         )
         p["tags"] = tags
@@ -186,7 +186,7 @@ def chosenPost(id):
     tags = execQuery(
        """
        SELECT name, colour, bgcolour FROM tags LEFT JOIN (posts, posttags)
-       ON (posts.id = %d AND posts.id = posttags.id AND tags.name = posttags.name)
+       ON (posts.id = %d AND posts.id = posttags.postid AND tags.name = posttags.tag)
        """ % (p["id"])
     )
     p["tags"] = tags
