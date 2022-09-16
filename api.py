@@ -153,15 +153,15 @@ def newp():
     for post in data:
         print(post, flush=True)
         timeFormat = "%d.%m.%Y %H:%M"
-        payloadT = "STR_TO_DATETIME(%s, %s)" % (post["date"], timeFormat.replace("M", "i"))
-        payload = "%d, %d, %s, %s, %s, %s" % (post["id"], post["image"], post["title"], post["description"], payloadT, post["content"])
+        payloadT = "STR_TO_DATETIME('%s', '%s')" % (post["date"], timeFormat.replace("M", "i"))
+        payload = "%d, %d, '%s', '%s', '%s', '%s'" % (post["id"], post["image"], post["title"], post["description"], payloadT, post["content"])
         query = "INSERT INTO posts (id, image, title, description, date, content) VALUES (%s)" % (payload)
         execQuery(query)
         for tag in post["tags"]:
-            payload = "%d, %s" % (post["id"], tag[0])
+            payload = "%d, '%s'" % (post["id"], tag[0])
             query = "INSERT INTO posttag (postid, tag) VALUES (%s)" % (payload)
             execQuery(query)
-            payload = "%s, %s, %s" % (tag[0], tag[1], tag[2])
+            payload = "'%s', '%s', '%s'" % (tag[0], tag[1], tag[2])
             query = "INSERT IGNORE INTO tags (name, bgcolour, colour) VALUES (%s)" % (payload)
             execQuery(query)
     return "Done."
