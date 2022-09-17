@@ -78,6 +78,7 @@ def createPostTable():
             title VARCHAR(255) NOT NULL,
             description VARCHAR(255) NOT NULL,
             date DATETIME NOT NULL,
+            author VARCHAR(255) NOT NULL,
             content TEXT NOT NULL
         )
         """
@@ -154,8 +155,8 @@ def newp():
         print("Handling post: '%s'" % (post["title"]))
         timeFormat = "%d.%m.%Y %H:%M"
         payloadT = "STR_TO_DATE('%s', '%s')" % (post["date"], timeFormat.replace("M", "i"))
-        payload = "%d, %d, '%s', '%s', %s, '%s'" % (post["id"], post["image"], post["title"], post["description"], payloadT, post["content"])
-        query = "INSERT INTO posts (id, image, title, description, date, content) VALUES (%s)" % (payload)
+        payload = "%d, %d, '%s', '%s', %s, '%s', '%s'" % (post["id"], post["image"], post["title"], post["description"], payloadT, post["author"], post["content"])
+        query = "INSERT INTO posts (id, image, title, description, date, author, content) VALUES (%s)" % (payload)
         execQuery(query)
         for tag in post["tags"]:
             payload = "%d, '%s'" % (post["id"], tag[0])
