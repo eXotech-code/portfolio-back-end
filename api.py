@@ -167,7 +167,7 @@ def newp():
             execQuery(query)
     return "Done."
 
-POST_DATE_FORMAT = "'%M %D %Y at %H:%I'"
+POST_DATE_FORMAT = "'%M %D %Y at %H:%i'"
 
 # This route is used for displaying previews of posts in blog showcase components.
 @app.route("/posts/recent", methods=["GET"])
