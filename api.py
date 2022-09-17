@@ -167,10 +167,12 @@ def newp():
             execQuery(query)
     return "Done."
 
+POST_DATE_FORMAT = "'%M %D %Y at %H:%I'"
+
 # This route is used for displaying previews of posts in blog showcase components.
 @app.route("/posts/recent", methods=["GET"])
 def recent():
-    posts = execQuery("SELECT id, image, title, description, date FROM posts")
+    posts = execQuery("SELECT id, image, title, description, DATE_FORMAT(date, %s) FROM posts" % (POST_DATE_FORMAT))
     for p in posts:
         tags = execQuery(
             """
@@ -183,8 +185,7 @@ def recent():
 
 @app.route("/posts/<int:id>", methods=["GET"])
 def chosenPost(id):
-    dateFormat = "'%M %D %Y at %H:%I'"
-    p = execQuery("SELECT id, image, title, description, DATE_FORMAT(date, %s), author, content FROM posts WHERE (id = %d)" % (dateFormat, id), array=False)
+    p = execQuery("SELECT id, image, title, description, DATE_FORMAT(date, %s), author, content FROM posts WHERE (id = %d)" % (POST_DATE_FORMAT, id), array=False)
     tags = execQuery(
        """
        SELECT name, colour, bgcolour FROM tags JOIN posttags
