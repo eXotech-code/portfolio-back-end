@@ -183,7 +183,7 @@ def recent():
 
 @app.route("/posts/<int:id>", methods=["GET"])
 def chosenPost(id):
-    p = execQuery("SELECT * FROM posts WHERE (id = %d)" % (id), array=False)
+    p = execQuery("SELECT id, image, title, description, DATE_FORMAT(date, '%M %D %Y at %H:%I'), author, content FROM posts WHERE (id = %d)" % (id), array=False)
     tags = execQuery(
        """
        SELECT name, colour, bgcolour FROM tags JOIN posttags
