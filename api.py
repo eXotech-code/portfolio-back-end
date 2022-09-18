@@ -61,6 +61,16 @@ def execQuery(q, array = True):
         print("\033[91m%s\033[0m" % (e), flush=True)
         fail()
 
+# Runs a database query to get all tags for post with certain id.
+def getTags(id):
+    tags = execQuery(
+       """
+       SELECT name, colour, bgcolour FROM tags JOIN posttags
+       ON (posttags.postid = %d AND posttags.tag = tags.name)
+       """ % (id)
+    )
+    return tags
+
 # Creating message table.
 def createMessageTable():
     # Make a new table.
@@ -174,26 +184,25 @@ POST_DATE_FORMAT = "'%M %D %Y at %H:%i'"
 def recent():
     posts = execQuery("SELECT id, image, title, description, DATE_FORMAT(date, %s) as date FROM posts" % (POST_DATE_FORMAT))
     for p in posts:
-        tags = execQuery(
-            """
-            SELECT name, colour, bgcolour FROM tags JOIN posttags
-            ON (posttags.postid = %d AND posttags.tag = tags.name)
-            """ % (p["id"])
-        )
-        p["tags"] = tags
+        p["tags"] = getTags(p["id"])
     return posts
 
 @app.route("/posts/<int:id>", methods=["GET"])
 def chosenPost(id):
     p = execQuery("SELECT id, image, title, description, DATE_FORMAT(date, %s) as date, author, content FROM posts WHERE (id = %d)" % (POST_DATE_FORMAT, id), array=False)
-    tags = execQuery(
-       """
-       SELECT name, colour, bgcolour FROM tags JOIN posttags
-       ON (posttags.postid = %d AND posttags.tag = tags.name)
-       """ % (p["id"])
-    )
-    p["tags"] = tags
+    p["tags"] = getTags(p["id"])
     return p
+
+@app.route("/posts/tagsearch/<string:tag>")
+def taggedPosts(tag):
+    query = """
+            SELECT id, title, description, date FROM posts JOIN posttags
+            ON (posttags.tag = '%s' AND posts.id = posttags.postid)
+            """ % (tag)
+    posts = execQuery(query)
+    for p in posts:
+        p["tags"] = getTags(p["id"])
+    return posts
 
 if __name__ == "__main__":
     createMessageTable()
