@@ -196,9 +196,9 @@ def chosenPost(id):
 @app.route("/posts/tagsearch/<string:tag>")
 def taggedPosts(tag):
     query = """
-            SELECT id, title, description, date FROM posts JOIN posttags
+            SELECT id, title, description, DATE_FORMAT(date, %s) as date FROM posts JOIN posttags
             ON (posttags.tag = '%s' AND posts.id = posttags.postid)
-            """ % (tag)
+            """ % (POST_DATE_FORMAT, tag)
     posts = execQuery(query)
     for p in posts:
         p["tags"] = getTags(p["id"])
