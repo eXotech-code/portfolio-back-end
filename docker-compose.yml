@@ -32,7 +32,7 @@ services:
       - 80
     environment:
       - NODE_ENV=production
-    command: "npm install && npm run build && node build"
+    command: "./run.sh"
     restart: on-failure
 
   web:
