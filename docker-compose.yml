@@ -30,9 +30,9 @@ services:
       - ./data/app:/home/node/app
     expose:
       - 80
-    # environment:
-    #   - NODE_ENV=production
-    command: "node build"
+    environment:
+      - NODE_ENV=production
+    command: "npm install && npm run build && node build"
     restart: on-failure
 
   web:
@@ -44,7 +44,6 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ./data/web:/usr/share/nginx/html
       - ./data/conf:/etc/nginx/conf.d
       - /etc/ssl:/etc/ssl
     restart: on-failure

@@ -1,0 +1,3 @@
+[submodule "data/app"]
+	path = data/app
+	url = https://github.com/eXotech-code/portfolio-svelte.git

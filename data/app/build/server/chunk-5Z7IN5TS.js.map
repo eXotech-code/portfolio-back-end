@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../.svelte-kit/adapter-node/chunks/arrow-right.js"],
-  "sourcesContent": ["const arrowRight = \"/_app/immutable/assets/arrow-right-37185e4c.svg\";\nexport {\n  arrowRight as a\n};\n"],
-  "mappings": ";AAAA,IAAM,aAAa;",
-  "names": []
-}
