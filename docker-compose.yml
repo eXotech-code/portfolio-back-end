@@ -23,16 +23,17 @@ services:
     restart: on-failure
 
   svelte-app:
-    image: node:latest
+    image: node:18-alpine3.15
     container_name: svelte-app
     working_dir: /home/node/app
     volumes:
       - ./data/app:/home/node/app
     expose:
       - 80
-    environment:
-      - NODE_ENV=production
+    # environment:
+    #   - NODE_ENV=production
     command: "node build"
+    restart: on-failure
 
   web:
     image: nginx
