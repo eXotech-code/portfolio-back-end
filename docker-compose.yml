@@ -25,7 +25,7 @@ services:
   svelte-app:
     image: node:latest
     container_name: svelte-app
-    working-dir: /home/node/app
+    working_dir: /home/node/app
     volumes:
       - ./data/app:/home/node/app
     expose:
