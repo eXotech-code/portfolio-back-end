@@ -71,6 +71,12 @@ def getTags(id):
     )
     return tags
 
+def tagInList(tag, l):
+    for t in l:
+        if tag[0] == t["name"]:
+            return True
+    return False
+
 # Creating message table.
 def createMessageTable():
     # Make a new table.
@@ -171,7 +177,7 @@ def newp():
         tagsAlreadyIn = getTags(post["id"])
         for tag in post["tags"]:
             # If the post is being replaced, do not duplicate tags.
-            if (tag in tagsAlreadyIn):
+            if tagInList(tag, tagsAlreadyIn):
                 continue;
             payload = "%d, '%s'" % (post["id"], tag[0])
             query = "INSERT INTO posttags (postid, tag) VALUES (%s)" % (payload)
