@@ -30,8 +30,6 @@ services:
       - ./data/app:/home/node/app
     expose:
       - 80
-    environment:
-      - NODE_ENV=production
     command: "./run.sh"
     restart: on-failure
 
