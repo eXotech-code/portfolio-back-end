@@ -168,7 +168,11 @@ def newp():
         payload = "%d, %d, '%s', '%s', %s, '%s', '%s'" % (post["id"], post["image"], post["title"], post["description"], payloadT, post["author"], post["content"])
         query = "REPLACE INTO posts (id, image, title, description, date, author, content) VALUES (%s)" % (payload)
         execQuery(query)
+        tagsAlreadyIn = getTags(post["id"])
         for tag in post["tags"]:
+            # If the post is being replaced, do not duplicate tags.
+            if (tag in tagsAlreadyIn):
+                continue;
             payload = "%d, '%s'" % (post["id"], tag[0])
             query = "INSERT INTO posttags (postid, tag) VALUES (%s)" % (payload)
             execQuery(query)
