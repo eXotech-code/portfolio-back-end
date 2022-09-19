@@ -1,0 +1,1 @@
+import{e}from"./index-07d89891.js";const a=async({fetch:t,params:o})=>{try{return await(await t(`https://www.piskiewicz.org/api/posts/${o.slug}`)).json()}catch{throw e(404,"Not found")}},p=Object.freeze(Object.defineProperty({__proto__:null,load:a},Symbol.toStringTag,{value:"Module"}));export{p as _,a as l};
