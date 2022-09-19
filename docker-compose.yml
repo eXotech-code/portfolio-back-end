@@ -22,17 +22,17 @@ services:
       - DB_PASS
     restart: on-failure
 
-    svelte-app:
-      image: node:latest
-      container_name: svelte-app
-      working-dir: /home/node/app
-      volumes:
-        - ./data/app:/home/node/app
-      expose:
-        - 80
-      environment:
-        - NODE_ENV=production
-      command: "node build"
+  svelte-app:
+    image: node:latest
+    container_name: svelte-app
+    working-dir: /home/node/app
+    volumes:
+      - ./data/app:/home/node/app
+    expose:
+      - 80
+    environment:
+      - NODE_ENV=production
+    command: "node build"
 
   web:
     image: nginx
