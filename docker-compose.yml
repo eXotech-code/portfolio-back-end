@@ -30,7 +30,7 @@ services:
     expose:
       - 80
     volumes:
-      - ./data/benches:/app/benches
+      - ./data/benches/images:/app/benches
     restart: on-failure
 
   svelte-app:
