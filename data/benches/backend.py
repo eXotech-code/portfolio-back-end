@@ -32,5 +32,13 @@ def getImage(filename):
 def getImageAmount():
     return str(len(listdir(BENCH_PATH)))
 
+@app.route("/image-paths", methods=["GET"])
+def getImagePaths():
+    dirList = listdir(BENCH_PATH)
+    paths = []
+    for x in dirList:
+        paths.append("https://www.piskiewicz.org/benches/image/" + x)
+    return paths
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=80)
