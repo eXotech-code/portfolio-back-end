@@ -15,6 +15,15 @@ def saveImage(image, p):
     image.save(p)
     print("Done.", flush=True)
 
+def getPaths(type):
+    searchPath = BENCH_PATH if type == "image" else THUMB_PATH
+    dirList = listdir(searchPath)
+    url = "https://www.piskiewicz.org/benches/%s/" % (type)
+    paths = []
+    for x in dirList:
+        paths.append(url + x)
+    return paths
+
 app = Flask(__name__)
 CORS(app)
 
@@ -48,11 +57,12 @@ def getImageAmount():
 
 @app.route("/image-paths", methods=["GET"])
 def getImagePaths():
-    dirList = listdir(BENCH_PATH)
-    paths = []
-    for x in dirList:
-        paths.append("https://www.piskiewicz.org/benches/image/" + x)
-    return paths
+    return getPaths("image")
+
+@app.route("/thumb-paths", methods=["GET"])
+def getThumbPaths():
+    return getPaths("thumb")
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=80)
