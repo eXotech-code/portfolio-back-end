@@ -3,7 +3,7 @@
 from flask import Flask, request, send_file
 from flask_cors import CORS
 from os import path, listdir
-import Image
+from PIL import Image
 
 BENCH_PATH = "/app/benches"
 THUMB_PATH = "/app/thumbs"
