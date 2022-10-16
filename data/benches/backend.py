@@ -37,7 +37,7 @@ def getThumb(filename):
         return send_file(sysPath, mimetype="image/png")
     else:
         with Image.open(path.join(BENCH_PATH, filename)) as img:
-            thumb = img.resize((1024, 1024), box=(img.width // 2 - 512, img.height // 2 - 512, 1024, 1024))
+            thumb = img.resize((1024, 1024))
             dest = path.join(THUMB_PATH, filename)
             thumb.save(dest, format="PNG")
             return send_file(dest, mimetype="image/png")
