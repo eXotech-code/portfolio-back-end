@@ -4,6 +4,7 @@ from flask import Flask, request, send_file
 from flask_cors import CORS
 from os import path, listdir
 from PIL import Image
+from datetime import datetime
 
 BENCH_PATH = "/app/benches"
 THUMB_PATH = "/app/thumbs"
@@ -15,6 +16,13 @@ def saveImage(image, p):
     image.save(p)
     print("Done.", flush=True)
 
+# For sorting files by date of creation.
+def dateKey(pathname):
+    datestring = pathname.split("/")[-1].replace(".png", "")
+    t = datetime.strptime(datestring, "%H-%M-%S-%m-%d-%Y")
+    return t.timestamp()
+
+# Return sorted list of image paths by descending dates.
 def getPaths(type):
     dirList = listdir(BENCH_PATH)
     # Because the "thumbs" endpoint is dynamic we can append all of
@@ -24,7 +32,7 @@ def getPaths(type):
     paths = []
     for x in dirList:
         paths.append(url + x)
-    return paths
+    return sorted(paths, key=dateKey, reverse=True)
 
 app = Flask(__name__)
 CORS(app)
