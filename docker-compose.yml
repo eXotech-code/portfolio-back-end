@@ -31,6 +31,7 @@ services:
       - 80
     volumes:
       - ./data/benches/images:/app/benches
+      - ./data/benches/thumbs:/app/thumbs
     restart: on-failure
 
   svelte-app:

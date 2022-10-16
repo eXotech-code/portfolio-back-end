@@ -3,8 +3,10 @@
 from flask import Flask, request, send_file
 from flask_cors import CORS
 from os import path, listdir
+from PIL import Image
 
 BENCH_PATH = "/app/benches"
+THUMB_PATH = "/app/thumbs"
 
 # Helper
 def saveImage(image, p):
@@ -27,6 +29,18 @@ def uploadImage():
 @app.route("/image/<filename>", methods=["GET"])
 def getImage(filename):
     return send_file(path.join(BENCH_PATH, filename))
+
+@app.route("/thumb/<filename>", methods=["GET"])
+def getThumb(filename):
+    sysPath = path.join(THUMB_PATH, filename)
+    if path.exists(sysPath):
+        return send_file(sysPath, mimetype="image/png")
+    else:
+        with Image.open(path.join(BENCH_PATH, filename)) as img:
+            thumb = img.resize((1024, 1024), box=(img.width // 2 - 512, img.height // 2 - 512, 1024, 1024))
+            dest = path.join(THUMB_PATH, filename)
+            thumb.save(dest, format="PNG")
+            return send_file(dest, mimetype="image/png")
 
 @app.route("/image-amount", methods=["GET"])
 def getImageAmount():
