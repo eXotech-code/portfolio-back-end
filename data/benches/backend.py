@@ -16,8 +16,10 @@ def saveImage(image, p):
     print("Done.", flush=True)
 
 def getPaths(type):
-    searchPath = BENCH_PATH if type == "image" else THUMB_PATH
-    dirList = listdir(searchPath)
+    dirList = listdir(BENCH_PATH)
+    # Because the "thumbs" endpoint is dynamic we can append all of
+    # image paths to the list and the thumbnails will get
+    # generated on the fly.
     url = "https://www.piskiewicz.org/benches/%s/" % (type)
     paths = []
     for x in dirList:
