@@ -5,11 +5,29 @@ from flask_cors import CORS
 from os import path, listdir
 from PIL import Image
 from datetime import datetime
+from pprint import pprint
 
 BENCH_PATH = "/app/benches"
 THUMB_PATH = "/app/thumbs"
 
-# Helper
+# --- DEBUG ---
+
+class LoggingMiddleware(object):
+    def __init__(self, app):
+        self.app = app
+
+    def __call__(self, env, resp):
+        errorlog = env["wsgi_errors"]
+        pprint(("REQUEST", env), stream=errorlog)
+
+        def log_response(status, headers, *args):
+            pprint(("RESPONSE", status, headers), stream=errorlog)
+            return resp(status, headers, *args)
+
+        return self.app(env, log_response)
+
+# --- HELPER ---
+
 def saveImage(image, p):
     p = path.join(p, image.filename)
     print("Saving image to %s..." % (p), flush=True)
@@ -34,8 +52,12 @@ def getPaths(type):
         paths.append(url + x)
     return sorted(paths, key=dateKey, reverse=True)
 
+# --- FLASK ---
+
 app = Flask(__name__)
 CORS(app)
+
+# --- ROUTES ---
 
 @app.route("/upload-image", methods=["POST"])
 def uploadImage():
@@ -73,6 +95,10 @@ def getImagePaths():
 def getThumbPaths():
     return getPaths("thumb")
 
+# --- RUNTIME ---
 
 if __name__ == "__main__":
+    # Wrap the Flask app in the logging middleware in order to
+    # print the incoming requests as well as responses.
+    app.wsgi_app = LoggingMiddleware(app.wsgi_app)
     app.run(host="0.0.0.0", port=80)
