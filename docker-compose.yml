@@ -35,9 +35,10 @@ services:
     restart: on-failure
 
   svelte-app:
-    image: node:18-alpine3.15
+    image: svelte-app
     container_name: svelte-app
-    working_dir: /home/node/app
+    build:
+      context: ./data/app
     volumes:
       - ./data/app:/home/node/app
     expose:
