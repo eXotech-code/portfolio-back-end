@@ -43,7 +43,6 @@ services:
       - ./data/app:/home/node/app
     expose:
       - 80
-    command: "./run.sh"
     restart: on-failure
 
   web:
