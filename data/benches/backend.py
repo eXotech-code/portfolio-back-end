@@ -6,6 +6,7 @@ from os import path, listdir
 from PIL import Image
 from datetime import datetime
 from pprint import pprint
+from sys import exit
 
 BENCH_PATH = "/app/benches"
 THUMB_PATH = "/app/thumbs"
@@ -38,7 +39,11 @@ def saveImage(image, p):
 # For sorting files by date of creation.
 def dateKey(pathname):
     datestring = pathname.split("/")[-1].replace(".png", "")
-    t = datetime.strptime(datestring, "%H-%M-%S-%m-%d-%Y")
+    try:
+        t = datetime.strptime(datestring, "%H-%M-%S-%m-%d-%Y")
+    except ValueError:
+        print("ERROR: While sorting files by date, could not parse datestring: '%s'." % (datestring))
+        exit(1)
     return t.timestamp()
 
 # Return sorted list of image paths by descending dates.
