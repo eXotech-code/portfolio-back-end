@@ -18,12 +18,12 @@ class LoggingMiddleware(object):
         self.app = app
 
     def __call__(self, env, resp):
-        errorlog = env["wsgi.errors"]
-        pprint(("REQUEST", env), stream=errorlog)
-        print(env["wsgi.input"].peek(16))
+        # errorlog = env["wsgi.errors"]
+        # pprint(("REQUEST", env), stream=errorlog)
+        print(env["wsgi.input"].peek())
 
         def log_response(status, headers, *args):
-            pprint(("RESPONSE", status, headers), stream=errorlog)
+            # pprint(("RESPONSE", status, headers), stream=errorlog)
             return resp(status, headers, *args)
 
         return self.app(env, log_response)
@@ -54,7 +54,7 @@ def filterPaths(paths):
         if dateKey != -1:
             filtered.append(p)
         else:
-            print("Deleting file with erroneous name: '%s'." % (p))
+            print("Deleting file with erroneous name: '%s'." % (p), flush=True)
             remove(p)
     return filtered
 
@@ -117,7 +117,7 @@ def getThumbPaths():
 # --- RUNTIME ---
 
 if __name__ == "__main__":
-    # # Wrap the Flask app in the logging middleware in order to
-    # # print the incoming requests as well as responses.
-    # app.wsgi_app = LoggingMiddleware(app.wsgi_app)
+    # Wrap the Flask app in the logging middleware in order to
+    # print the incoming requests as well as responses.
+    app.wsgi_app = LoggingMiddleware(app.wsgi_app)
     app.run(host="0.0.0.0", port=80)
