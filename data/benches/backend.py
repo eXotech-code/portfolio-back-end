@@ -56,6 +56,7 @@ def filterPaths(paths):
         else:
             print("Deleting file with erroneous name: '%s'." % (p))
             remove(p)
+    return filtered
 
 # Return sorted list of image paths by descending dates.
 def getPaths(type):
