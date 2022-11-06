@@ -117,7 +117,7 @@ def getThumbPaths():
 # --- RUNTIME ---
 
 if __name__ == "__main__":
-    # Wrap the Flask app in the logging middleware in order to
-    # print the incoming requests as well as responses.
-    app.wsgi_app = LoggingMiddleware(app.wsgi_app)
+    # # Wrap the Flask app in the logging middleware in order to
+    # # print the incoming requests as well as responses.
+    # app.wsgi_app = LoggingMiddleware(app.wsgi_app)
     app.run(host="0.0.0.0", port=80)
