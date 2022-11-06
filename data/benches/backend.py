@@ -2,7 +2,7 @@
 
 from flask import Flask, request, send_file
 from flask_cors import CORS
-from os import path, listdir
+from os import path, listdir, remove
 from PIL import Image
 from datetime import datetime
 from pprint import pprint
@@ -42,9 +42,20 @@ def dateKey(pathname):
     try:
         t = datetime.strptime(datestring, "%H-%M-%S-%m-%d-%Y")
     except ValueError:
-        print("ERROR: While sorting files by date, could not parse datestring: '%s'." % (datestring))
-        exit(1)
+        print("ERROR (dateKey): Could not parse datestring: '%s'." % (datestring))
+        return -1
     return t.timestamp()
+
+# Filter the image paths by removing those that don't have proper datetime
+# in their filename. Also delete those files.
+def filterPaths(paths):
+    filtered = []
+    for p in paths:
+        if dateKey != -1:
+            filtered.append(p)
+        else:
+            print("Deleting file with erroneous name: '%s'." % (p))
+            remove(p)
 
 # Return sorted list of image paths by descending dates.
 def getPaths(type):
@@ -56,6 +67,7 @@ def getPaths(type):
     paths = []
     for x in dirList:
         paths.append(url + x)
+    paths = filterPaths(paths) # Remove files without proper datetime in filename.
     return sorted(paths, key=dateKey, reverse=True)
 
 # --- FLASK ---
