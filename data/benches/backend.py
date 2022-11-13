@@ -7,7 +7,6 @@ from PIL import Image
 from datetime import datetime
 from pprint import pprint
 from sys import exit
-from math import abs
 
 BENCH_PATH = "/app/benches"
 THUMB_PATH = "/app/thumbs"
