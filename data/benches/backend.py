@@ -7,6 +7,7 @@ from PIL import Image
 from datetime import datetime
 from pprint import pprint
 from sys import exit
+from math import abs
 
 BENCH_PATH = "/app/benches"
 THUMB_PATH = "/app/thumbs"
@@ -97,7 +98,8 @@ def getThumb(filename):
         return send_file(sysPath, mimetype="image/png")
     else:
         with Image.open(path.join(BENCH_PATH, filename)) as img:
-            thumb = img.resize((img.width // 4, img.height // 4))
+            scaleFactor = 512 // img.height
+            thumb = img.resize((img.height * scaleFactor, img.width * scaleFactor))
             dest = path.join(THUMB_PATH, filename)
             thumb.save(dest, format="PNG")
             return send_file(dest, mimetype="image/png")
