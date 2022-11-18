@@ -13,20 +13,20 @@ THUMB_PATH = "/app/thumbs"
 
 # --- DEBUG ---
 
-class LoggingMiddleware(object):
-    def __init__(self, app):
-        self.app = app
+# class LoggingMiddleware(object):
+#     def __init__(self, app):
+#         self.app = app
 
-    def __call__(self, env, resp):
-        # errorlog = env["wsgi.errors"]
-        # pprint(("REQUEST", env), stream=errorlog)
-        print(env["wsgi.input"].peek())
+#     def __call__(self, env, resp):
+#         # errorlog = env["wsgi.errors"]
+#         # pprint(("REQUEST", env), stream=errorlog)
+#         print(env["wsgi.input"].peek())
 
-        def log_response(status, headers, *args):
-            # pprint(("RESPONSE", status, headers), stream=errorlog)
-            return resp(status, headers, *args)
+#         def log_response(status, headers, *args):
+#             # pprint(("RESPONSE", status, headers), stream=errorlog)
+#             return resp(status, headers, *args)
 
-        return self.app(env, log_response)
+#         return self.app(env, log_response)
 
 # --- HELPER ---
 
@@ -89,6 +89,12 @@ def uploadImage():
         saveImage(image, BENCH_PATH)
     return "OK"
 
+@app.route("/delete/<filename>", methods=["DELETE"])
+def deleteImage(filename):
+    print('Got DELETE request for filename: "%s"' % (filename), flush=True)
+    remove("%s/%s" % (BENCH_PATH, filename))
+    remove("%s/%s" % (THUMB_PATH, filename))
+
 @app.route("/image/<filename>", methods=["GET"])
 def getImage(filename):
     return send_file(path.join(BENCH_PATH, filename))
@@ -128,7 +134,4 @@ def getFilenames():
 # --- RUNTIME ---
 
 if __name__ == "__main__":
-    # # Wrap the Flask app in the logging middleware in order to
-    # # print the incoming requests as well as responses.
-    # app.wsgi_app = LoggingMiddleware(app.wsgi_app)
     app.run(host="0.0.0.0", port=80)
