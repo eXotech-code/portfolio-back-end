@@ -94,6 +94,7 @@ def deleteImage(filename):
     print('Got DELETE request for filename: "%s"' % (filename), flush=True)
     remove("%s/%s" % (BENCH_PATH, filename))
     remove("%s/%s" % (THUMB_PATH, filename))
+    return 'Image "%s" deleted' % (filename)
 
 @app.route("/image/<filename>", methods=["GET"])
 def getImage(filename):
