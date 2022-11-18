@@ -92,8 +92,11 @@ def uploadImage():
 @app.route("/delete/<filename>", methods=["DELETE"])
 def deleteImage(filename):
     print('Got DELETE request for filename: "%s"' % (filename), flush=True)
-    remove("%s/%s" % (BENCH_PATH, filename))
-    remove("%s/%s" % (THUMB_PATH, filename))
+    remove(path.join(BENCH_PATH, filename))
+    try:
+        remove(path.join(THUMB_PATH, filename))
+    except FileNotFoundError:
+        print('ERROR: Couldn\'t delete thumbnail for filename "%s"' % (filename), flush=True)
     return 'Image "%s" deleted' % (filename)
 
 @app.route("/image/<filename>", methods=["GET"])
