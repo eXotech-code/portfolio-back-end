@@ -59,12 +59,15 @@ def filterPaths(paths):
     return filtered
 
 # Return sorted list of image paths by descending dates.
-def getPaths(type):
+def getPaths(type=None):
     dirList = listdir(BENCH_PATH)
     # Because the "thumbs" endpoint is dynamic we can append all of
     # image paths to the list and the thumbnails will get
     # generated on the fly.
-    url = "https://www.piskiewicz.org/benches/%s/" % (type)
+    if not type:
+        url = ""
+    else:
+        url = "https://www.piskiewicz.org/benches/%s/" % (type)
     paths = []
     for x in dirList:
         paths.append(url + x)
@@ -116,6 +119,11 @@ def getImagePaths():
 @app.route("/thumb-paths", methods=["GET"])
 def getThumbPaths():
     return getPaths("thumb")
+
+@app.route("/filenames", methods=["GET"])
+def getFilenames():
+    return getPaths()
+
 
 # --- RUNTIME ---
 
