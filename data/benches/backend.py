@@ -110,7 +110,7 @@ def getThumb(filename):
         return send_file(sysPath, mimetype="image/png")
     else:
         with Image.open(path.join(BENCH_PATH, filename)) as img:
-            scaleFactor = 512 / img.height
+            scaleFactor = 256 / img.height
             newHeight = int(img.height * scaleFactor)
             newWidth = int(img.width * scaleFactor)
             thumb = img.resize((newWidth, newHeight))
