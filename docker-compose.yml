@@ -22,18 +22,6 @@ services:
       - DB_PASS
     restart: on-failure
 
-  benches:
-    image: benches
-    container_name: benches
-    build:
-      context: ./data/benches
-    expose:
-      - 80
-    volumes:
-      - ./data/benches/images:/app/benches
-      - ./data/benches/thumbs:/app/thumbs
-    restart: on-failure
-
   svelte-app:
     image: svelte-app
     container_name: svelte-app
